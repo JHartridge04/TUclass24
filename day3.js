@@ -1,5 +1,14 @@
+
+let explo 
+
+
+function preload(){
+ explo = loadImage('explo.png')
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight)
+  background(100, 150, 100)
 }
 
 function draw() {
@@ -10,7 +19,9 @@ function draw() {
      }
      if(key === "n"){
     background (166, 154, 123);
+
   }
+  
   //background
   strokeWeight(600)
   stroke(55)
@@ -25,15 +36,17 @@ function draw() {
   
   line(0,600,350,250);
     strokeWeight(6)
-  if (mouseIsPressed == true) {
+
+  if (mouseIsPressed == true && key === "n") {
   fill(255, 0, 0)
   textSize(50)
   text ('You have made a grave mistake', 100, 100)
+  image(explo, windowWidth/2, 100, 500, 500)
  }else{
    fill(213, 247, 242)
    textSize(50)
    text('Hello! I can be of assistance as long as you dont touch me!', 100, 100)
- }
+    }
   ellipse(300,300,150,150)
   //head
   rect(178,125,240,100)
@@ -41,7 +54,7 @@ function draw() {
   triangle(170,470,303,378,430,470)
   // middle point
   strokeWeight(60)
-  if (mouseIsPressed == true) {
+  if (mouseIsPressed == true && key === "n") {
     stroke(0)
   }
     else{
@@ -72,9 +85,14 @@ function draw() {
   fill(0)
   triangle(300, 215, 270, 185, 325, 185)
   //eyebrows
-  if (mouseIsPressed == true) {
+  if (mouseIsPressed == true && key === "n" ) {
   strokeWeight(8)
   line(200,100, 280, 158)
   line(389, 100, 313, 160)
 }
+
+}
+
+function drawRobot() {
+  
 }
