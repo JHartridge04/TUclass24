@@ -4,10 +4,11 @@ function setup() {
 
 function draw() {
   
-  if(mouseX<175||mouseX>422){
-  background (166, 154, 123);
+  if(key === "d"){
+  background (3, 144, 252);
      
-     }else{
+     }
+     if(key === "n"){
     background (166, 154, 123);
   }
   //background
