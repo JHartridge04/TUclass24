@@ -20,6 +20,7 @@ let failGameBool = false
 let OOpBool = false
 let BallStolenBool = false
 let goalSaved = false
+let tooLongBool=false
 let winGameBool = false
 
 //start screen variables
@@ -86,7 +87,7 @@ ballY = windowHeight/2+250
 x1Slider = createSlider (0, windowWidth, 50, 10)
 y1Slider = createSlider (0, windowHeight, 260, 10)
 x2Slider = createSlider (520, 1020, 730, 10)
-y2Slider = createSlider (270, 480, 240, 10)
+y2Slider = createSlider (270, 480, 480, 10)
 //x3Slider = createSlider (0, windowWidth, 730, 10)
 //y3Slider = createSlider (0, windowHeight, 610, 10)
 x4Slider = createSlider (0, windowWidth, 150, 10)
@@ -104,12 +105,14 @@ function draw() {
 	textFont(gameFont)
 	background(pitch)
 	imageMode(CORNERS)
-	hideS()
+	
 	if (startScreenBool == true){
 		startingScreen()
+		hideS()
 	}
 	if(playingGameBool == true){
 		playingGame()
+		hideS()
 		imageMode(CENTER)
 		image(messi, playerX, playerY, 70, 70)
 		shmoovement()
@@ -124,35 +127,43 @@ function draw() {
 	if (failGameBool == true && OOpBool == true){
 		background(pitch)
 		text('Oops!. You ran out of play.', windowWidth/2, 100 )
-		text('Press retry to try again', windowWidth/2, 200)
+		text('Press retry to try again or refresh the browser', windowWidth/2, 200)
 	} 
 	if(failGameBool == true && BallStolenBool == true){
 		text('Unlucky! The Ball was stolen from you.', windowWidth/2, 100 )
-		text('Press retry to try again', windowWidth/2, 200)
-	} else if(failGameBool == true && goalSaved == true){
+		text('Press retry to try again or refresh the browser', windowWidth/2, 200)
+	} 
+	if(failGameBool == true && goalSaved == true){
 		background(pitch)
 		textAlign(CENTER)
 		text('Unlucky! Your shot was saved.', windowWidth/2, 100 )
-		text('Press retry to try again', windowWidth/2, 200)
+		text('Press retry to try again or refresh the browser', windowWidth/2, 200)
+	} 
+	else if (failGameBool == true && tooLongBool == true){
+		background(pitch)
+		textAlign(CENTER)
+		hideS()
+		text('Slow Poke! You took to long to shoot.', windowWidth/2, 100 )
+		text('Refresh the browser!', windowWidth/2, 200)
 	}
 	if (scoringOppBool == true){
 		background(net)
 		shoot()
 		showS()
-	
 	}
 	if(winGameBool == true){
 		scoringOppBool = false
 	imageMode(CORNERS)
+	hideS()
     background(bigW)
     textSize(50)
     fill(255)
     textAlign(CENTER)
     text('You have Won', windowWidth/2, 300)
+    textSize(30)
+    text('Refresh your browser to play again', windowWidth/2, 500)
      //winscreen()
   }
-
-
 
 }
 
@@ -165,6 +176,7 @@ function startingScreen(){
   	playingGameBool = false
   	scoringOppBool = false
   	goalSaved = false
+  	tooLongBool =false
   	startButton.show()
 	retryButton.hide()
 	playerX = 50
@@ -191,6 +203,7 @@ function playingGame() {
 	scoringOppBool =false 
   	playingGameBool = true
   	goalSaved = false
+  	tooLongBool =false
 	startButton.hide()
 	retryButton.hide()
 	background(pitch)
@@ -217,7 +230,7 @@ function shmoovement() {
 //defender random spawn
 function opposition(){
 
-	for(let i =0; i<=14; i++){
+	for(let i =0; i<=19; i++){
 		//intial defender spawn
 		image(defender, defenderX[i], defenderY[i], 70, 70)
 		//distance func
@@ -235,7 +248,7 @@ function opposition(){
 	defenderX.push(random(277, windowWidth-277))
 	defenderY.push(random(100, windowHeight-110))
 	// caps array length at 10
-	if(defenderX.length>15){
+	if(defenderX.length>20){
 		defenderX.splice(defenderX.length-1, 1)
 		defenderY.splice(defenderY.length-1, 1)
 
@@ -260,7 +273,7 @@ function failCons (){
 
 
 
-	if (playerY <= -30 || playerY >= 660){
+	if (playerY <= 10 || playerY >= 690){
 		failGameBool = true
 		OOpBool = true
 		playingGameBool = false
@@ -308,6 +321,22 @@ function shoot() {
   //text('x1 slider', 30, 40)
   //text('y1 slider', 270, 40)
   text('Use the sliders to aim your shot')
+  x1Slider.position(50, 20)
+  y1Slider.position(200, 20)
+  x2Slider.position(350, 20)
+  y2Slider.position(500, 20)
+  x4Slider.position(650, 20)
+  y4Slider.position(800, 20)
+  textSize(20)
+  text('x1', 60, 60)
+  text('y1', 210, 60)
+  text('x2', 360, 60)
+  text('y2', 510, 60)
+  text('x4', 660, 60)
+  text('y4', 810, 60)
+
+textSize(15)
+  text('Use the sliders to adjust your shot. shoot before the goalie gets too fast!', 50, 120)
   let x1 = x1Slider.value();
   let y1 = y1Slider.value();
   let x2 = x2Slider.value();
@@ -324,7 +353,7 @@ function shoot() {
   // Calculate the circle's coordinates.
   fill(255);
   imageMode(CENTER)
-    t = .5 * sin(frameCount * 0.03) + 0.5;;
+    t = .5 * sin(frameCount * 0.05) + 0.5;;
   let ballx = curvePoint(x1, x2, x3, x4, t);
   let bally = curvePoint(y1, y2, y3, y4, t);
     fill(255);
@@ -378,12 +407,18 @@ if (scoringOppBool == true){
 }
 
 function goallie(){
-	xSpeed = 3
-	ySpeed = 3
   image(keepa, keepaX, keepaY, 200, 300)
   keepaX = keepaX + xSpeed
-  if(keepaX >= 980 || keepaX <= 560){
-    xSpeed = xSpeed * -1
+  if(keepaX >= 960 || keepaX <= 540){
+    xSpeed = xSpeed * -1.1
+    if (xSpeed >= 100){
+    	failGameBool = true
+		tooLongBool = true
+		playingGameBool = false
+		scoringOppBool = false
+		
+
+    }
   }
  }
 
