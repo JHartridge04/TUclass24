@@ -196,7 +196,7 @@ function playingGame() {
 	background(pitch)
 	textSize(20)
 	fill(255, 215, 0)
-	text('Press "p" to shoot' , windowWidth/3, 100)
+	text('Press "the arrow keys" to move' , windowWidth/3, 100)
 }
 //player movement controls
 function shmoovement() {
@@ -217,7 +217,7 @@ function shmoovement() {
 //defender random spawn
 function opposition(){
 
-	for(let i =0; i<=9; i++){
+	for(let i =0; i<=14; i++){
 		//intial defender spawn
 		image(defender, defenderX[i], defenderY[i], 70, 70)
 		//distance func
@@ -232,15 +232,24 @@ function opposition(){
 	retryButton.mousePressed(startingScreen)
 		}
 		//random spawn point func
-	defenderX.push(random(267, windowWidth-267))
-	defenderY.push(random(100, windowHeight-100))
+	defenderX.push(random(277, windowWidth-277))
+	defenderY.push(random(100, windowHeight-110))
 	// caps array length at 10
-	if(defenderX.length>10){
+	if(defenderX.length>15){
 		defenderX.splice(defenderX.length-1, 1)
 		defenderY.splice(defenderY.length-1, 1)
 
 
 		}
+
+		defenderX[i] = defenderX[i] +xSpeed
+		if(defenderX[i] >= windowWidth-267 || defenderX[i] <= 267){
+    xSpeed = xSpeed * -1
+  }
+		defenderY[i] = defenderY[i] + ySpeed
+		if(defenderY[i] >= windowHeight-100 || defenderY[i] <= 100){
+    	ySpeed = ySpeed * -1
+  }
 	}
 	
 }
@@ -369,6 +378,8 @@ if (scoringOppBool == true){
 }
 
 function goallie(){
+	xSpeed = 3
+	ySpeed = 3
   image(keepa, keepaX, keepaY, 200, 300)
   keepaX = keepaX + xSpeed
   if(keepaX >= 980 || keepaX <= 560){
