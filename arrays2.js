@@ -17,7 +17,7 @@ imageMode(CENTER)
 
 function draw(){
 	background( 230, 130, 30)
-	for(let i =0; i<x.length; i++){
+	for(let i =0; i<10; i++){
 		image(furby, x[i], y[i], 30, 30)
 	}
 }
